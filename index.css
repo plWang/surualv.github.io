@@ -1,0 +1,110 @@
+html, body {
+    font-size: 6.25%;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: #333;
+}
+
+#page {
+    font-size: 0;
+}
+
+@font-face {
+    src: url(../fonts/consolas.ttf);
+}
+
+
+#left-bar, #right-content {
+    display: inline-block;
+    padding-top: 44px
+}
+
+#left-bar {
+    width: 20%;
+}
+
+#right-content {
+    width: 80%;
+    vertical-align: top;
+}
+
+#left-bar .title-line {
+    width: 65%;
+    height: 1px;
+    margin: 15px auto;
+    background-color: #aaa;
+}
+
+#right-content .title-line {
+    width: 30%;
+    height: 1px;
+    margin: 10px 0;
+    background-color: #aaa;
+}
+
+#bar-title, #bar-sub-title {
+    width: 100%;
+    text-align: center;
+}
+
+#bar-title {
+    font-size: 22rem;
+}
+
+#bar-sub-title {
+    font-size: 16rem;
+    font-weight: 200;
+    color: #aaa;
+}
+
+#left-bar li {
+    font-size: 16rem;
+    font-weight: 200;
+    list-style: none;
+    color: #333;
+    padding: 4px 4px;
+}
+
+#right-content .title {
+    text-align: left;
+    font-size: 28rem;
+    color: #333;
+}
+
+#right-content .abstract {
+    width: 80%;
+    text-align: left;
+    font-size: 16rem;
+    color: #aaa;
+}
+
+#right-content .info {
+    width: 70%;
+    padding: 4px 0;
+}
+
+.info .catagory, .info .tags, .info .date {
+    display: inline-block;
+    font-size: 14rem;
+    font-weight: 200;
+    color: #aaa;
+}
+
+.info .catagory {
+    width: 30%;
+}
+
+.info .tags {
+    width: 40%;
+}
+
+.info .date {
+    width: 30%;
+}
+
+
