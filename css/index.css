@@ -11,6 +11,11 @@ a {
     color: #333;
 }
 
+a:hover {
+    color: #aaa;
+    text-decoration: none;
+}
+
 #page {
     font-size: 0;
 }
@@ -21,28 +26,122 @@ a {
 }
 
 
-#left-bar, #right-content {
+.left-bar, .right-content {
     display: inline-block;
     padding-top: 44px
 }
 
-#left-bar {
-    width: 20%;
+@media only screen and (max-width: 768px) {
+    .top-bar, .gallary {
+        width: 100%;
+    }
+    
+    #home-img {
+        display: block;
+        width: 100%;
+    }
+    
+    .title-line, #bar-list {
+        display: none;
+    }
+    
+    #float-algo, #float-js, #float-pt {
+        position: absolute;
+        font-size: 15rem;
+        opacity: 0;
+        transition: opacity 300ms ease;
+        -webkit-transition: opacity 300ms ease;
+    }
+    
+    #float-algo a, #float-js a, #float-pt a {
+        color: #fff;
+    }
+    
+    #float-algo.shown, #float-js.shown, #float-pt.shown {
+        opacity: 1;
+    }
+    
+    #float-algo {
+        left: 5%;
+        top: 45%;
+    }
+    
+    #float-js {
+        left: 65%;
+        top: 60%;
+    }
+    
+    #float-pt {
+        left: 25%;
+        bottom: 25%;
+    }
+    .abstract, .info {
+        margin-top: 10px;
+    }
+    
+    .info .catagory, .info .tags, .info .date {
+        display: block;
+        font-size: 14rem;
+        font-weight: 200;
+        color: #aaa;
+    }
+        
 }
 
-#right-content {
-    width: 80%;
-    vertical-align: top;
+@media only screen and (min-width: 769px) {
+    .left-bar {
+        width: 20%;
+    }
+    .gallary {
+        width: 480px;
+        max-width: 60%;
+    }
+
+    #home-img {
+        display: block;
+        width: 480px;
+    }
+
+    .home-poem {
+        width: 40%;
+        margin: auto;
+        font-size: 16rem;
+        padding-left: 40px;
+        text-align: left;
+    }
+    
+    .right-content {
+        width: 80%;
+        vertical-align: top;
+    }
+    .info .catagory, .info .tags, .info .date {
+        display: inline-block;
+        font-size: 14rem;
+        font-weight: 200;
+        color: #aaa;
+    }
+
+    .info .catagory {
+        width: 30%;
+    }
+
+    .info .tags {
+        width: 40%;
+    }
+
+    .info .date {
+        width: 30%;
+    }    
 }
 
-#left-bar .title-line {
+.left-bar .title-line {
     width: 65%;
     height: 1px;
     margin: 15px auto;
     background-color: #aaa;
 }
 
-#right-content .title-line, .detail .title-line {
+.right-content .title-line, .detail .title-line {
     width: 30%;
     height: 1px;
     margin: 10px 0;
@@ -64,7 +163,7 @@ a {
     color: #aaa;
 }
 
-#left-bar li {
+.left-bar li {
     font-size: 16rem;
     font-weight: 200;
     list-style: none;
@@ -78,7 +177,7 @@ a {
 
 .article .title {
     text-align: left;
-    font-size: 28rem;
+    font-size: 23rem;
     color: #333;
 }
 
@@ -94,25 +193,6 @@ a {
     padding: 4px 0;
 }
 
-.info .catagory, .info .tags, .info .date {
-    display: inline-block;
-    font-size: 14rem;
-    font-weight: 200;
-    color: #aaa;
-}
-
-.info .catagory {
-    width: 30%;
-}
-
-.info .tags {
-    width: 40%;
-}
-
-.info .date {
-    width: 30%;
-}
-
 .detail {
     margin: 44px 20%;
 }
@@ -120,22 +200,4 @@ a {
 .gallary, .home-poem {
     display: inline-block;
     vertical-align: middle;
-}
-
-.gallary {
-    width: 480px;
-    max-width: 60%;
-}
-
-#home-img {
-    display: block;
-    width: 480px;
-}
-
-.home-poem {
-    width: 40%;
-    margin: auto;
-    font-size: 16rem;
-    padding-left: 40px;
-    text-align: left;
 }
