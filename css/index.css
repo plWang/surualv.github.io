@@ -4,6 +4,7 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+    font-family: "Anonymous Pro";
 }
 
 a {
@@ -15,6 +16,7 @@ a {
 }
 
 @font-face {
+    font-family: "Anonymous Pro";
     src: url(../fonts/Anonymous Pro.ttf);
 }
 
@@ -115,7 +117,25 @@ a {
     margin: 44px 20%;
 }
 
+.gallary, .home-poem {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.gallary {
+    width: 480px;
+    max-width: 60%;
+}
+
 #home-img {
     display: block;
-    height: 90%;
+    width: 480px;
+}
+
+.home-poem {
+    width: 40%;
+    margin: auto;
+    font-size: 16rem;
+    padding-left: 40px;
+    text-align: left;
 }
