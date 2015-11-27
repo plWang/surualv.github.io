@@ -114,3 +114,8 @@ a {
 .detail {
     margin: 44px 20%;
 }
+
+#home-img {
+    display: block;
+    height: 90%;
+}
