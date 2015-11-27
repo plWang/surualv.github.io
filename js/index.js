@@ -15,7 +15,7 @@ function determineDevice() {
 }
 
 $(document).ready(function () {
-	$('.gallary').on('click', function () {
+	$('.gallary').on('touch', function () {
 		if (isMobile) {
 			if ($('#float-algo').hasClass('shown')) {
 				$('#float-algo').removeClass('shown');
