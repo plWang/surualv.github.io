@@ -16,17 +16,17 @@ function determineDevice() {
 
 $(document).ready(function () {
 	var floatAlgo = $('#float-algo'), floatJs = $('#float-js'), 
-	floatPt = $('#floatPt');
+	floatPt = $('#float-pt');
 	$('.gallary').on('touchstart', function () {
 		if (isMobile) {
 			if (floatAlgo.hasClass('shown')) {
 				floatAlgo.removeClass('shown');
 				floatJs.removeClass('shown');
-				$('#float-pt').removeClass('shown');
+				floatPt.removeClass('shown');
 			} else {
-				$('#float-algo').addClass('shown');
-				$('#float-js').addClass('shown');
-				$('#float-pt').addClass('shown');
+				floatAlgo.addClass('shown');
+				floatJs.addClass('shown');
+				floatPt.addClass('shown');
 			}
 		}
 	});

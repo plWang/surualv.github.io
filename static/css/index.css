@@ -152,6 +152,10 @@ a:hover {
         font-weight: 200;
         color: #aaa;
     }
+    
+    .paint-img {
+        width: 100%;
+    }
         
 }
 
@@ -197,6 +201,10 @@ a:hover {
     .info .date {
         width: 30%;
     }    
+    .paint-img {
+        width: 70%;
+        display: block;
+    }
 }
 
 .left-bar .title-line {
