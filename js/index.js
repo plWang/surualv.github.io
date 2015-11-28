@@ -15,11 +15,13 @@ function determineDevice() {
 }
 
 $(document).ready(function () {
+	var floatAlgo = $('#float-algo'), floatJs = $('#float-js'), 
+	floatPt = $('#floatPt');
 	$('.gallary').on('touchstart', function () {
 		if (isMobile) {
-			if ($('#float-algo').hasClass('shown')) {
-				$('#float-algo').removeClass('shown');
-				$('#float-js').removeClass('shown');
+			if (floatAlgo.hasClass('shown')) {
+				floatAlgo.removeClass('shown');
+				floatJs.removeClass('shown');
 				$('#float-pt').removeClass('shown');
 			} else {
 				$('#float-algo').addClass('shown');

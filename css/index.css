@@ -25,10 +25,63 @@ a:hover {
     src: url(../fonts/Anonymous Pro.ttf);
 }
 
-
 .left-bar, .right-content {
     display: inline-block;
     padding-top: 44px
+}
+
+#bar-title, #bar-sub-title {
+    width: 100%;
+    text-align: center;
+}
+
+#bar-title {
+    font-size: 22rem;
+}
+
+#bar-sub-title {
+    font-size: 16rem;
+    font-weight: 200;
+    color: #aaa;
+}
+
+.left-bar li {
+    font-size: 16rem;
+    font-weight: 200;
+    list-style: none;
+    color: #333;
+    padding: 4px 4px;
+}
+
+.article {
+    margin: 40px 0;
+}
+
+.article .title {
+    text-align: left;
+    font-size: 23rem;
+    color: #333;
+}
+
+.article .abstract {
+    width: 80%;
+    text-align: left;
+    font-size: 16rem;
+    color: #aaa;
+}
+
+.article .info {
+    width: 70%;
+    padding: 4px 0;
+}
+
+.detail {
+    margin: 44px 20%;
+}
+
+.gallary, .home-poem {
+    display: inline-block;
+    vertical-align: middle;
 }
 
 @media only screen and (max-width: 768px) {
@@ -51,10 +104,16 @@ a:hover {
     
     #float-algo, #float-js, #float-pt {
         position: absolute;
-        font-size: 15rem;
+        font-size: 12.5rem;
         opacity: 0;
         transition: opacity 300ms ease;
         -webkit-transition: opacity 300ms ease;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+        width: 82px;
+        height: 82px;
+        text-align: center;
+        line-height: 82px;
     }
     
     #float-algo a, #float-js a, #float-pt a {
@@ -73,11 +132,15 @@ a:hover {
     #float-js {
         left: 65%;
         top: 60%;
+        transition-delay: 50ms;
+        -webkit-transition-delay: 50ms;
     }
     
     #float-pt {
         left: 25%;
         bottom: 25%;
+        transition-delay: 100ms;
+        -webkit-transition-delay: 100ms;
     }
     .abstract, .info {
         margin-top: 10px;
@@ -148,58 +211,4 @@ a:hover {
     height: 1px;
     margin: 10px 0;
     background-color: #aaa;
-}
-
-#bar-title, #bar-sub-title {
-    width: 100%;
-    text-align: center;
-}
-
-#bar-title {
-    font-size: 22rem;
-}
-
-#bar-sub-title {
-    font-size: 16rem;
-    font-weight: 200;
-    color: #aaa;
-}
-
-.left-bar li {
-    font-size: 16rem;
-    font-weight: 200;
-    list-style: none;
-    color: #333;
-    padding: 4px 4px;
-}
-
-.article {
-    margin: 40px 0;
-}
-
-.article .title {
-    text-align: left;
-    font-size: 23rem;
-    color: #333;
-}
-
-.article .abstract {
-    width: 80%;
-    text-align: left;
-    font-size: 16rem;
-    color: #aaa;
-}
-
-.article .info {
-    width: 70%;
-    padding: 4px 0;
-}
-
-.detail {
-    margin: 44px 20%;
-}
-
-.gallary, .home-poem {
-    display: inline-block;
-    vertical-align: middle;
 }
