@@ -36,6 +36,10 @@ a:hover {
         width: 100%;
     }
     
+    .top-bar, .main-content {
+        padding-top: 22px;
+    }
+    
     #home-img {
         display: block;
         width: 100%;
@@ -92,11 +96,14 @@ a:hover {
     .left-bar {
         width: 20%;
     }
+    .right-content {
+        width: 80%;
+        vertical-align: top;
+    }
     .gallary {
         width: 480px;
         max-width: 60%;
     }
-
     #home-img {
         display: block;
         width: 480px;
@@ -108,11 +115,6 @@ a:hover {
         font-size: 16rem;
         padding-left: 40px;
         text-align: left;
-    }
-    
-    .right-content {
-        width: 80%;
-        vertical-align: top;
     }
     .info .catagory, .info .tags, .info .date {
         display: inline-block;
