@@ -138,7 +138,7 @@ a:hover {
     
     #float-pt {
         left: 25%;
-        bottom: 25%;
+        bottom: 15%;
         transition-delay: 100ms;
         -webkit-transition-delay: 100ms;
     }
