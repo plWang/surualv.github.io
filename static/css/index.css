@@ -4,7 +4,7 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: "Consolas";
+    font-family: "Anonymous";
     font-weight: 100;
 }
 
@@ -22,8 +22,8 @@ a:hover {
 }
 
 @font-face {
-    font-family: "Consolas";
-    src: url(../fonts/Consolas.ttf);
+    font-family: "Anonymous";
+    src: url(../fonts/Anonymous\ Pro.ttf);
 }
 
 .left-bar, .right-content {
@@ -60,14 +60,14 @@ a:hover {
 
 .article .title {
     text-align: left;
-    font-size: 23rem;
+    font-size: 21rem;
     color: #333;
 }
 
 .article .abstract {
     width: 80%;
     text-align: left;
-    font-size: 16rem;
+    font-size: 14rem;
     color: #aaa;
 }
 
