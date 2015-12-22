@@ -1,0 +1,270 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<style>
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    color: #737373;
+    background-color: white;
+    margin: 10px 13px 10px 13px;
+}
+table {
+	margin: 10px 0 15px 0;
+	border-collapse: collapse;
+}
+td,th {	
+	border: 1px solid #ddd;
+	padding: 3px 10px;
+}
+th {
+	padding: 5px 10px;	
+}
+
+a {
+    color: #0069d6;
+}
+a:hover {
+    color: #0050a3;
+    text-decoration: none;
+}
+a img {
+    border: none;
+}
+p {
+    margin-bottom: 9px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #404040;
+    line-height: 36px;
+}
+h1 {
+    margin-bottom: 18px;
+    font-size: 30px;
+}
+h2 {
+    font-size: 24px;
+}
+h3 {
+    font-size: 18px;
+}
+h4 {
+    font-size: 16px;
+}
+h5 {
+    font-size: 14px;
+}
+h6 {
+    font-size: 13px;
+}
+hr {
+    margin: 0 0 19px;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+}
+blockquote {
+    padding: 13px 13px 21px 15px;
+    margin-bottom: 18px;
+    font-family:georgia,serif;
+    font-style: italic;
+}
+blockquote:before {
+    content:"\201C";
+    font-size:40px;
+    margin-left:-10px;
+    font-family:georgia,serif;
+    color:#eee;
+}
+blockquote p {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 18px;
+    margin-bottom: 0;
+    font-style: italic;
+}
+code, pre {
+    font-family: Monaco, Andale Mono, Courier New, monospace;
+}
+code {
+    background-color: #fee9cc;
+    color: rgba(0, 0, 0, 0.75);
+    padding: 1px 3px;
+    font-size: 12px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+pre {
+    display: block;
+    padding: 14px;
+    margin: 0 0 18px;
+    line-height: 16px;
+    font-size: 11px;
+    border: 1px solid #d9d9d9;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+pre code {
+    background-color: #fff;
+    color:#737373;
+    font-size: 11px;
+    padding: 0;
+}
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:10px auto;
+    }
+}
+@media print {
+	body,code,pre code,h1,h2,h3,h4,h5,h6 {
+		color: black;
+	}
+	table, pre {
+		page-break-inside: avoid;
+	}
+}
+</style>
+<title>广度优先搜索</title>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax:{inlineMath:[['$','$']]}});</script><script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<h4>广度优先搜索</h4>
+
+<p>最为基本的图算法概念，最短路径算法中的 Dijkstra 算法及最小生成树中的 Prim 算法都可看作其思想的推广</p>
+
+<h5>伪代码</h5>
+
+<pre><code>BFS(V, s)
+for each vertex in V -- s
+    vertex.color = white
+    vertex.d = ∞
+    vertex.pie = NIL
+
+s.color = gray
+s.d = 0
+s.pie = NIL
+
+Q = ∅
+ENQUEUE(Q, s)
+while (Q !=∅)
+    u = DEQUEUE(q)
+    for each v in u.adj
+        if v.color == white
+            v.color = gray
+            v.d = u.d + 1
+            v.pie = u
+            ENQUEUE(Q, v)
+    u.color = black
+</code></pre>
+
+<p>广度优先搜索算法的核心，是保证距离较短的点，必定被发现，即在发现距离为 $k + 1$ 的点前，距离为 $k$ 的一定全部被发现了。</p>
+
+<p>伪代码中的 QUEUE 是一个 FIFO 队列，用于保证先进入队列的（事实上是距离更短的）为优先被便利。而 color 属性很好的表现了顶点的状态。在初始化时，除了根节点 $s$ 的颜色被设置为灰色外，所以顶点都为白色，即为被发现。而当一个顶点首次被发现时，对其赋予灰色，直到对其邻接链表遍历完成（相当于所有相邻节点都被发现），才对其赋予黑色。因而，灰色可被理解为白色与黑色的临界状态，亦可理解为已发现节点与未发现节点的边界。</p>
+
+<h5>正确性</h5>
+
+<p>广度优先搜索算法将保证如下结果：</p>
+
+<blockquote><p>设 $G = (V, E)$ 为一个有向图或者无向图，并假设 BFS 算法以 $s$ 为源结点在图 $G$ 上运行，那么在算法执行过程中，从发现根节点 s 到发现所有的节点，并在算法中止时，对于所有的 $ v \in V$, $v.d = \delta(s, v)$，且对于任何可以从 $s$ 到达的节点 $v != s$，从根节点 $s$ 到节点 $v$ 的一条最短路径为 $s$ 到 $v$ 的前继节点的最短路径加上 $u, v$ 之间的边距。</p></blockquote>
+
+<p>如何证明广度优先搜索算法的正确性呢，这之前需要引出三条引理：</p>
+
+<p><strong>引理一</strong>：给定无向图或是有向图 $ G = (V, E) $,设 $s$ 为图中的任意节点，对于任意边 $(u, v) \in E$，$\delta(s, u) &lt;= \delta(s, v) + 1$</p>
+
+<p>引理一的证明比较容易：常规情况下，$u$ 和 $v$ 节点都是可以到达的，由于在上述算法中，边距都为 1，故引理一成立，而倘若其中一个节点是不可达到的，引理一也是显然成立的。</p>
+
+<p><strong>引理二</strong>：给定无向图或是有向图 $ G = (V, E) $，假定 BFS 以顶点 $s$ 作为源结点，那么在 BFS 终结时，对于每一个顶点 $v$，满足 $v.d >= \delta(s, v)$</p>
+
+<p>可用数学归纳法进行证明：在初始化时，对于根节点 $s，s.d = 0$ $\delta(s, d) = 0$，满足引理二中的结论，而对于其它任意顶点 v，$v.d = ∞ $ 引理二中的 $v.d > \delta(s, v)$ 也显然成立。</p>
+
+<p>那么到了归纳步，归纳假设是，对于顶点 $u$, $u.d > \delta(s, u)$, 从伪代码中'v.d = u.d + 1' 的赋值操作，即引理一中的结论，可以得出</p>
+
+<p>$$v.d = u.d + 1 >= \delta(s, u) + 1 >= \delta(s, d)$$</p>
+
+<p>从伪代码中可知 $v.d$ 在之后不会发生变化（循环中只对颜色为白色的顶点进行操作，而每次操作伊始就对其颜色赋值为灰色，显然循环中的操作只对每个顶点执行一次），从而引理二得证。</p>
+
+<p><strong>引理三</strong>：假定对图 $G$ 进行 BFS 的过程中，队列 $Q$ 包含的节点为 $&lt;v_1, v_2, v_3, ...,...v_r>$，其中 $v_1$ 为队列头，$v_r$ 为队列尾，那么 $v_r.d &lt;= v_1.d + 1$，并且对于 $i=1,2, ..., r-1$，$v_i.d &lt;= v _ {i+1}.d$</p>
+
+<p>可以通过伪代码中入队操作的次数进行归纳证明。在初始化状态下，$Q$ 中只有节点 $s$，上述引理成立。而在第一个归纳步，在出队操作时，头节点被删除，第二个节点 $v_2$ 成为新的头节点，根据之前的归纳假设，满足 $v_1.d &lt; v_2.d$，且 $v_r.d &lt; v_1.d + 1$，因而很容易得出：</p>
+
+<p>$$v_r.d &lt;= v_1.d + 1 &lt;= v_2.d + 1$$</p>
+
+<p>余下不等式不受影响，之后的归纳步中的每次出队操作，这一性质都得到维护。</p>
+
+<p>**从引理三可以引申出如下结论，若 $v_i, v_j$ 都为图中节点，且 $v_i$ 在 $v_j$ 之前出队，那么 $v_i.d &lt; v_j.d$</p>
+
+<p>而对于入队操作，当把节点 $v$ 加入到队列时，其前继节点 $u$ 已经出队，新的根节点为 $v_1$，并且满足 $v_1.d >= u.d $，根据归纳假设，对于新加入的节点，$v.d = u.d + 1 &lt; v_1.d + 1 $ 假定新加入的节点索引值为 $r+1$，那么对于其之前的节点 $v_r$，满足 $v_r.d &lt; u.d +1 $，即 $v_r.d &lt; v _ {r+1}.d$，余下不等式不受影响，归纳假设成立。</p>
+
+<p>从而通过对入队和出队操作的分别分析，引理三得证。</p>
+
+<p><strong>主证明</strong></p>
+
+<p>由上述三条引理，可以证明广度优先搜索算法的正确性。</p>
+
+<p>用反证法进行证明似乎更为易懂，即假设存在这样一个顶点 $v$, 在算法结束时 $v.d != \delta(s, v)$，那么可假设一条从节点 $s$ 到 $v$ 的最短路径，且在这条最短路径上，$u$ 为 $v$ 的前继节点，根据广度优先搜索算法的性质，可以得到 $\delta(s, v) = \delta(s, u) + 1$，由于 $u$ 为从 $s$ 到 $v$ 的最短路径上的点，因而知道 $u.d = \delta(s, u)$，另外根据引理二中$v.d > \delta(s, v)$， 从而可归纳出下式：</p>
+
+<p>$$v.d > \delta(s, d) = \delta(s, u) + 1 = u.d + 1 $$</p>
+
+<p>之后的证明，提供两种思路：</p>
+
+<p><strong>思路一</strong></p>
+
+<p>以伪代码中 u = DEQUEUE(q) 为分析的切面，考虑将顶点 $v$ 从队列 $Q$ 中取出的时间：由于循环中的</p>
+
+<pre><code>    v.color = gray
+    ...
+    ENQUEUE(Q, v)
+</code></pre>
+
+<p>以及初始化时对根节点设置为灰色，因而当把节点 $v$ 取出时，$v$ 必定不为白色，这意味着 $v.d$ 将不会发生变化，因为即使在对之后的节点的邻接链表进行遍历时，也只会对颜色为白色的节点进行操作，所以事实上，每个节点的 $d$ 只会被赋值一次。如此便可以把情形进一步压缩：假定$v$ 为节点 $u_0, u_1, ..., u_n$ 的邻接节点，且这些节点都在 $v$ 前被发现，那么对于最早出队的节点 $u$,对其邻接链表进行遍历时，$v$ 即被赋值，并赋予灰色。因而 $v.d$ 在此时确定并不再变化。</p>
+
+<p>广度优先搜索算法保证距离较短的节点被优先发现，更准确的说，被发现的节点距离，必然以非逆序的方式排列。而从伪代码的循环中可以看出，每次发现一个节点之后，就会将其加入队列 $Q$ 中，队列 $Q$ 维护着先进先出的性质，由此可得出，最早出队的节点 $u$，应当为距离最近的节点，即保证 $u.d = \delta(s, u)$,那么循环中的 $v.d = u.d + 1$ 就和上文中归纳出的式子$v.d > \delta(s, d) = \delta(s, u) + 1 = u.d + 1 $ 相矛盾了，从而假设不成立，主证明得证。</p>
+
+<p><strong>思路二</strong></p>
+
+<p>事实上，还可以从 $u$ 的角度来证明，当遍历 $u$ 的邻接链表时，$v$ 的颜色有三种可能：</p>
+
+<ol>
+<li>当 $v$ 为黑色时，则其已与之前出队，从而根据引理三的推论，可得 $v.d &lt; u.d$ 与上文中的归纳式矛盾。</li>
+<li><p>当 $v$ 为白色时，循环中将会执行：</p>
+
+<pre><code> v.color = gray
+ v.d = u.d + 1
+</code></pre>
+
+<p> 从而与归纳式亦矛盾。</p></li>
+<li>当 $v$ 为灰色时，则在上一种思路中已有所叙述，必然是在某个节点 $w$ 被遍历时对 $v$ 置灰，而 $w.d &lt; u.d$ 且 $w.d = v.d + 1$，这与归纳式也是矛盾的。</li>
+</ol>
+
+
+<p>由于三种情况全部存在矛盾，故原假设不成立，主证明得证。</p>
+</body>
+</html>
