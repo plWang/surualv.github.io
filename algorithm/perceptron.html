@@ -1,0 +1,320 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<style>
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: 'Anonymous' "Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    color: #737373;
+    background-color: white;
+    margin: 10px 13px 10px 13px;
+}
+
+@font-face {
+    font-family: 'Anonymous';
+    src: url(/Users/adavindes/Downloads/font/AnonymousPro-1.002.001/Anonymous\ Pro.ttf);
+}
+
+table {
+	margin: 10px 0 15px 0;
+	border-collapse: collapse;
+}
+td,th {	
+	border: 1px solid #ddd;
+	padding: 3px 10px;
+}
+th {
+	padding: 5px 10px;	
+}
+
+a {
+    color: #0069d6;
+}
+a:hover {
+    color: #0050a3;
+    text-decoration: none;
+}
+a img {
+    border: none;
+}
+p {
+    margin-bottom: 9px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #404040;
+    line-height: 36px;
+}
+h1 {
+    margin-bottom: 18px;
+    font-size: 30px;
+}
+h2 {
+    font-size: 24px;
+}
+h3 {
+    font-size: 18px;
+}
+h4 {
+    font-size: 16px;
+}
+h5 {
+    font-size: 14px;
+}
+h6 {
+    font-size: 13px;
+}
+hr {
+    margin: 0 0 19px;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+}
+blockquote {
+    padding: 13px 13px 21px 15px;
+    margin-bottom: 18px;
+    font-family:georgia,serif;
+    font-style: italic;
+}
+blockquote:before {
+    content:"\201C";
+    font-size:40px;
+    margin-left:-10px;
+    font-family:georgia,serif;
+    color:#eee;
+}
+blockquote p {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 18px;
+    margin-bottom: 0;
+    font-style: italic;
+}
+code, pre {
+    font-family: Monaco, Andale Mono, Courier New, monospace;
+}
+code {
+    background-color: #fee9cc;
+    color: rgba(0, 0, 0, 0.75);
+    padding: 1px 3px;
+    font-size: 12px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+pre {
+    display: block;
+    padding: 14px;
+    margin: 0 0 18px;
+    line-height: 16px;
+    font-size: 11px;
+    border: 1px solid #d9d9d9;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+pre code {
+    background-color: #fff;
+    color:#737373;
+    font-size: 11px;
+    padding: 0;
+}
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:10px auto;
+    }
+}
+@media print {
+	body,code,pre code,h1,h2,h3,h4,h5,h6 {
+		color: black;
+	}
+	table, pre {
+		page-break-inside: avoid;
+	}
+}
+
+</style>
+<title>感知机</title>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax:{inlineMath:[['$$$','$$$']]}});</script><script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<h3>感知机</h3>
+
+<p>感知机是二类分类的线性分类模型，其输入为实例的特征向量，输出为实例的类别，取 +1 和 -1 二值。</p>
+
+<h4>定义</h4>
+
+<p>假设输入空间（特征空间）是 $$$X \in R^n$$$，输出空间是 $$$Y = {+1, -1}$$$，输入 $$$x \in X$$$ 表示实例的特征向量，对应于输入空间（特征空间）的点，输出 $$$y \in Y$$$ 表示实例的类别，由输入空间到输出空间的如下函数</p>
+
+<p>$$f(x) = sign(w \cdot x + b)$$</p>
+
+<p>称为感知机，其中 $$$w$$$ 和 $$$b$$$ 为感知机模型参数。</p>
+
+<h4>几何解释</h4>
+
+<p>线性方程 $$$w \cdot x + b = 0$$$ 对应特征空间 $$$R^n$$$ 中的一个超平面 $$$S$$$，其中 $$$w$$$ 是超平面的法向量，$$$b$$$是超平面的截距，这个超平面将特征空间划分为两个部分，位于两部分的点（特征向量）分别被分为正、负两类。因此，超平面 $$$S$$$ 称为分离超平面。</p>
+
+<h4>线性可分数据集</h4>
+
+<p>给定一个数据集</p>
+
+<p>$$T = {(x_1, y_1), (x_2, y_2), ..., (x_N, y_N)}$$</p>
+
+<p>其中， $$$x_i \in X = R^n$$$, $$$y \in {+1, -1}$$$, $$$i = 1, 2, 3...., N$$$，如果存在一个超平面 $$$S$$$，即：</p>
+
+<p>$$w\cdot x + b = 0$$</p>
+
+<p>能够将数据集中的正实例点与负实例点正确地划分到超平面的两侧，即对所有的正实例点，$$$w \dot x_i + b > 0$$$, 而对所有的负实例点，$$$w\cdot x_i + b &lt; 0$$$，则称数据集 $$$T$$$ 为线性可分数据集。</p>
+
+<h4>输入空间的某一点到超平面的距离：</h4>
+
+<p>$$\frac{1}{||w||}|w \cdot x + b|$$</p>
+
+<p>其中 $$$||w||$$$ 是 $$$w$$$ 的 L2 范数</p>
+
+<h4>误分类点数据</h4>
+
+<p>恒存在$$$-y_i(w \cdot x_i + b) &lt; 0$$$</p>
+
+<p>即，假设超平面 $$$S$$$ 的误分类点集合为 $$$M$$$,则所有误分类点到超平面 $$$S$$$ 的总距离为：</p>
+
+<p>$$-\frac{1}{||w||}\sum_{x_i \in M}y_i(w \cdot x + b)$$</p>
+
+<p>因而，感知机 $$$sign(w \cdot x + b)$$$ 学习的损失函数定义为：</p>
+
+<p>$$L(w, b) = -\sum_{x_i \in M}y_i(w \cdot x_i + b)$$</p>
+
+<p>其中 $$$M$$$ 是误分类点的集合，这个损失韩式可理解为感知机学习的经验风险函数。</p>
+
+<h4>感知机学习算法的原始形式</h4>
+
+<p>给定一个训练数据集</p>
+
+<p>$$T = {(x_1, y_1), (x_2, y_2) ... (x_n, y_n)}$$</p>
+
+<p>其中， $$$x_i \in X = R^n$$$, $$$y \in {+1, -1}$$$，求参数 $$$w, b$$$，使其为以下损失函数极小化的解：</p>
+
+<p>$$min_ {w, b}L(w, b) = -\sum _ {x_i \in M}y_i(w \cdot x_i + b)$$</p>
+
+<p>可采用梯度下降法，假设误分类点集合 $$$M$$$ 是固定的，那么损失函数 $$$L(w, b)$$$ 的梯度由：</p>
+
+<p>$$\nabla_w L(w, b) = -\sum_{x_i \in M}y_ix_i$$</p>
+
+<p>$$\nabla_b L(w, b) = -\sum_{x_i \in M}y_i$$</p>
+
+<p>共同给出</p>
+
+<h4>算法的收敛性</h4>
+
+<p>定理:</p>
+
+<p>设训练数据集 $$$T = {(x_1, y_1), (x_2, y_2) ... (x_n, y_n)}$$$ 是线性可分的，其中$$$x_i \in X = R^n$$$, $$$y \in {+1, -1}$$$, $$$i = 1, 2, 3...., N$$$，则</p>
+
+<ol>
+<li><p>存在满足条件 $$$||\hat{w _ {opt}}|| = 1$$$ 的超平面 $$$\hat {w _ {opt}} \cdot \hat{x} = w _ {opt} \cdot x + b_{opt} = 0$$$ 将训练数据集完全正确分开，且存在 $$$\gamma > 0$$$，对所有的 $$$i = 1, 2, ..., N$$$</p>
+
+<p> $$y_i(\hat{w _ {opt}} \cdot \hat{x_i}) = y_i(w_{opt} \cdot x_i + b_i) >= \gamma$$</p></li>
+<li><p>令 $$$R = max||\hat{x_i}||$$$, 其中 $$$1 &lt;= i &lt;= N$$$ 则感知机算法在训练数据集上的误分类次数 $$$k$$$ 满足不等式</p></li>
+</ol>
+
+
+<p>$$k &lt;= (\frac{R}{\gamma})^2$$</p>
+
+<p>(2) 证明：</p>
+
+<p>在第 $$$k$$$ 次分类错误前，扩充向量为 $$$\hat{w_{k-1}}$$$，即：</p>
+
+<p>$$y_k(\hat{w_{k-1} \cdot x_k}) &lt; 0$$</p>
+
+<p>那么，扩充之后据梯度下降，有：</p>
+
+<p>$$w_k = w_{k-1} + \eta y_kx_k$$</p>
+
+<p>$$b_k = b_{k-1} + \eta y_k$$</p>
+
+<p>即 $$$\hat {w_k} = \hat {w_{k-1}} + \eta y_k \hat {x_k}$$$</p>
+
+<p>由此得</p>
+
+<p>$$\hat {w_k}\hat w _ {opt} = (\hat {w _ {k-1}} + \eta y_k \hat {x_k})  \hat w_{opt} $$</p>
+
+<p>$$ = \hat {w _ {k-1}} \hat w _ {opt} + \eta y_k \hat {x_k} \hat w _{opt}$$</p>
+
+<p>$$ >= \hat {w _ {k-1}} \hat w _ {opt} + \eta \gamma$$ ( 因为 $$$y_i(\hat{w _ {opt}} \cdot \hat{x_i}) = y_i(w _{opt} \cdot x_i + b_i) >= \gamma$$$)</p>
+
+<p>由此对上式第一项进行归纳，可得：</p>
+
+<p>$$\hat {w_k}\hat w_{opt} >= k\eta \gamma$$</p>
+
+<p>类似的</p>
+
+<p>$$||\hat w_k||^2 = ((\hat {w _ {k-1}} + \eta y_k \hat {x_k}))^2$$</p>
+
+<p>$$=||\hat{w _ {k-1}}||^2 + \eta^2||\hat x_k||^2 + 2\eta w _ {k-1}y_k\hat x_k$$</p>
+
+<p>$$=||\hat {w _ {k-1}}||^2 + \eta^2||\hat x_k||^2 + 2\eta \hat {w _ {k-1}}y_k\hat x_k &lt;= ||w _ {k-1}||^2 + \eta||\hat x_k||^2$$</p>
+
+<p>(其中 $$$\hat {w _ {k-1}}y_k\hat x_k &lt;= 0$$$ 在于 $$$x_k, y_k$$$ 是 $$$\hat w_k$$$ 的误分类点)</p>
+
+<p>接上式</p>
+
+<p>$$||\hat {w _ {k-1}}||^2 + \eta^2||\hat x_k||^2 &lt;=||\hat {w _ {k-1}}||^2 + \eta^2R^2$$</p>
+
+<p>对 $$$||\hat {w _ {k-1}}||^2 + \eta^2R^2$$$ 第一项进行归纳，可得：</p>
+
+<p>$$||\hat {w_{k-1}}||^2 &lt;= k\eta^2R^2$$</p>
+
+<p>由$$$\hat {w_k}\hat w _ {opt} >= k\eta \gamma$$$与$$$||w_{k}||^2 &lt;= k\eta^2y_k^2\hat x_k^2$$$</p>
+
+<p>可得：</p>
+
+<p>$$k \eta \gamma &lt;= \hat {w_k}\hat w_{opt} &lt;= ||\hat {w_k}|| &lt;= \sqrt k \eta R $$</p>
+
+<p>从而</p>
+
+<p>$$k &lt;= (\frac{R}{\gamma})^2$$</p>
+
+<p>原命题得证</p>
+
+<h4>感知机学习算法的对偶形式</h4>
+
+<p>对偶形式的基本想法是，将 $$$w$$$, $$$b$$$ 表示为实例 $$$x_i$$$ 和标记 $$$y_i$$$ 的线性组合的形式，通过求解其系数而求得 $$$w$$$ 和 $$$b$$$，不失一般性，可将 $$$w_0$$$ 和 $$$b_0$$$均设为 0</p>
+
+<p>假设总共修改 $w, b n$ 次， 最后的表现形式为：</p>
+
+<p>$$w = \sum _ {i=1}^N\alpha _iy_ix_i$$</p>
+
+<p>$$b = \sum _ {i=1}^N\alpha _iy_i$$</p>
+
+<p>其中，$$$\alpha_i ＝ n_i\eta$$$</p>
+
+<p>最终的感知机模型可表示为：</p>
+
+<p>$$f(x) = sign(\sum _ {j=1}^N\alpha_j y_j x_j \cdot x + b)$$</p>
+</body>
+</html>
