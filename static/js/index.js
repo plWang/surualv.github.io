@@ -29,7 +29,7 @@ $(document).ready(function () {
 		}
   });
 	$('body').on('click', function () {
-    if ($('.nav-bar').hasClass('expand') && !!status) {
+    if ($('.nav-bar').hasClass('expand') && status == 1) {
 			$('.nav-bar').removeClass('expand');
 			$('.nav-bar').find('li').removeClass('shown');
 			status = 0;
