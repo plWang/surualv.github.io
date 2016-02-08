@@ -15,12 +15,24 @@ function determineDevice() {
 }
 
 $(document).ready(function () {
+	var status = 0;
   $('.nav-btn').on('click', function () {
-    $('.nav-bar').toggleClass('expand'); 
+    $('.nav-bar').toggleClass('expand');
     if ($('.nav-bar').hasClass('expand')) {
       setTimeout(function () {
         $('.nav-bar').find('li').toggleClass('shown');
+				status = 1;
       }, 200);
-    } else $('.nav-bar').find('li').toggleClass('shown');
+    } else {
+			$('.nav-bar').find('li').toggleClass('shown');
+			status = 0;
+		}
   });
+	$('body').on('click', function () {
+    if ($('.nav-bar').hasClass('expand') && !!status) {
+			$('.nav-bar').removeClass('expand');
+			$('.nav-bar').find('li').removeClass('shown');
+			status = 0;
+    }
+	})
 });
