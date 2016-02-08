@@ -35,7 +35,7 @@ a, a:hover {
 }
 
 .nav {
-  margin: 36px 36px 0 0;
+  margin: 36px 24px 0 0;
   float: right;
   text-align: right;
 }
@@ -44,6 +44,7 @@ a, a:hover {
   background: none;
   border: none;
   outline: none;
+  padding: 0;
 }
 
 .nav-span {
@@ -168,6 +169,13 @@ a, a:hover {
 .paint-img, .photograph-img {
   width: 64%;
   margin: 0 18%;
+}
+
+@media only screen and (max-width: 768px) {
+.paint-img, .photograph-img {
+  width: 90%;
+  margin: 0 5%;
+}
 }
 
 .home-btn {
