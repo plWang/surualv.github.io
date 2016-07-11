@@ -1,0 +1,239 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<style>
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    color: #737373;
+    background-color: white;
+    margin: 10px 13px 10px 13px;
+}
+table {
+	margin: 10px 0 15px 0;
+	border-collapse: collapse;
+}
+td,th {	
+	border: 1px solid #ddd;
+	padding: 3px 10px;
+}
+th {
+	padding: 5px 10px;	
+}
+
+a {
+    color: #0069d6;
+}
+a:hover {
+    color: #0050a3;
+    text-decoration: none;
+}
+a img {
+    border: none;
+}
+p {
+    margin-bottom: 9px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #404040;
+    line-height: 36px;
+}
+h1 {
+    margin-bottom: 18px;
+    font-size: 30px;
+}
+h2 {
+    font-size: 24px;
+}
+h3 {
+    font-size: 18px;
+}
+h4 {
+    font-size: 16px;
+}
+h5 {
+    font-size: 14px;
+}
+h6 {
+    font-size: 13px;
+}
+hr {
+    margin: 0 0 19px;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+}
+blockquote {
+    padding: 13px 13px 21px 15px;
+    margin-bottom: 18px;
+    font-family:georgia,serif;
+    font-style: italic;
+}
+blockquote:before {
+    content:"\201C";
+    font-size:40px;
+    margin-left:-10px;
+    font-family:georgia,serif;
+    color:#eee;
+}
+blockquote p {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 18px;
+    margin-bottom: 0;
+    font-style: italic;
+}
+code, pre {
+    font-family: Monaco, Andale Mono, Courier New, monospace;
+}
+code {
+    background-color: #fee9cc;
+    color: rgba(0, 0, 0, 0.75);
+    padding: 1px 3px;
+    font-size: 12px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+pre {
+    display: block;
+    padding: 14px;
+    margin: 0 0 18px;
+    line-height: 16px;
+    font-size: 11px;
+    border: 1px solid #d9d9d9;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+pre code {
+    background-color: #fff;
+    color:#737373;
+    font-size: 11px;
+    padding: 0;
+}
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:10px auto;
+    }
+}
+@media print {
+	body,code,pre code,h1,h2,h3,h4,h5,h6 {
+		color: black;
+	}
+	table, pre {
+		page-break-inside: avoid;
+	}
+}
+</style>
+<title>Bellman-Ford 算法</title>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax:{inlineMath:[['$$$','$$$']]}});</script><script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<h4>Bellman-Ford 算法</h4>
+
+<p>单源最短路径的基本算法之一，虽然时间复杂度上的表现不及 dijkstra 算法，但普适性更强，不仅可以用于含有负权重的边的图中，甚至可以检测出图中是否有负环，即最短路径是否存在。</p>
+
+<p>首先需要知道如下两个子过程：</p>
+
+<pre><code>INITIALIZE-SINGLE-SOURCE(G, s)
+    for each vetex in G.V
+        v.d = max
+        v.π = NIL
+    s.d = 0
+</code></pre>
+
+<p>另一个，则是在上一篇文章中提到过的 RELAX:</p>
+
+<pre><code>RELAX(u, v, w):
+    if d.v &gt; d.u + w(u, v)
+        v.d = u.d + w(u, v)
+        v.π = u
+</code></pre>
+
+<h5>伪代码</h5>
+
+<p>结合上两个子过程，算法可表示为如下形式：</p>
+
+<pre><code>BELLMAN-FORD(G, w, s)
+    INITIALIZE-SINGLE-SOURCE(G, s)
+    for  i = 1 to G.V - 1
+        for each edge(u, v) in G.E
+            RELAX(u, v, w)
+
+    for each edge(u, v) in G.E
+        if v.d &gt; u.d + w(u, v)
+            return false
+    return true
+</code></pre>
+
+<h5>正确性</h5>
+
+<p>如何证明 Bellman-Ford 算法的正确性呢，大概可以从两个方面展开：</p>
+
+<ul>
+<li><p>伪代码中第一个循环（for  i = 1 to G.V - 1...）可以在没有负环的情况下获得从源结点 $$$S$$$ 到任意可到达的节点 $$$v$$$ 的最短路径。
+  这需要引用路径<strong>松弛性质</strong>：</p>
+
+<blockquote><p>如果 $$$p=&lt;v_0, v_1, v_2 ... v_k>$$$ 是从源结点 $$$s=v_0$$$ 到节点 $$$v_k$$$ 的最短路径，并且对 $$$p$$$中的边进行松弛的次序是$$$(v_0, v_1), (v_1, v_2), (v_2, v_3),...,(v_{k-1}, v_k)$$$，则 $$$v_k.d = \delta(s, v_k)$$$</p></blockquote>
+
+<p>  松弛性质的证明在此不做展开。由于最短路径 $$$p$$$ 应当由简单路径组成，即最多含有 $$$V-1$$$ 条边，上一段落提到的循环，总共正是 $$$V-1$$$ 次，也就是能保证包含任意边数的最短路径。而在每一次循环中，对每条边进行松弛，第 $$$i$$$ 次循环，松弛后的边中将会包含 $$$(v_{i-1}, v_i)$$$（用多幅图逐步展现将很容易得到此结论，即对任何的最短路径$$$p$$$，其第 $$$i$$$ 条边必在第 $$$i$$$ 次循环中被松弛），而根据路径松弛性质，$$$v.d = v_k.d = \delta(s, v_k) = \delta(s, v)$$$</p></li>
+<li><p>代码中第二个循环（for each edge(u, v) in G.E...）可以判断图中是否有负环路</p>
+
+<p>  由第一方面所获得结论可知，在第一个大循环后，得到了 $$$v_k.d = \delta(s, v_k)$$$，即意味着如下等式的成立：</p>
+
+<p>  $$v.d = \delta(s, d) &lt;= \delta(s, u) + w(u, v) = u.d + w(u, v)$$</p>
+
+<p>  因而，倘若在图中并没有负环，第二个循环毫无疑问将会返回 false.</p>
+
+<p>  那么，若是存在负环呢，假定该环路 $$$c = (v_0, v_1, ..., v_k)$$$，而其中 $$$v_0 = v_k$$$，那么可以将整个环路的权重和(为负)表示为：</p>
+
+<p>  $$\sum _ {i=1} ^kw (v_{i-1}, v_i) &lt; 0$$</p>
+
+<p>  利用反证法继续证明，如果第二个循环返回 true,  但是 $$$v _ {i}.d &lt;= v _ {i-1}.d + w(v _ {i-1}, v_i)$$$ 依旧成立</p>
+
+<p>  （这里 $$$i = 1, 2, 3, ..., k$$$，$$$v_i$$$ 都为负环路上的点），那么倘若将环路上的权重全部相加，将会有：</p>
+
+<p>  $$\sum _ {i=1} ^kv_i.d &lt;= \sum _ {i=1} ^k (v_ {i-1}.d + w(v _ {i-1}, v_i)) $$</p>
+
+<p>  $$= \sum _ {i=1} ^kv_ {i-1}.d + \sum _ {i=1} ^kw (v _ {i-1}, v_i)$$</p>
+
+<p>  由于 $$$v_0 = v_k$$$，即 $$$v_0.d = v_k.d$$$, 而在 $$$\sum _ {i=1}^kv_i.d$$$ 和 $$$\sum _  {i=1}^kv _ {i-1}.d$$$ 中除 $$$v_0, v_k$$$ 外，各顶点只算入一次，因而$$$\sum _ {i=1}^kv_i.d=\sum _ {i=1}^kv_{i-1}.d$$$，那么要使上式成立，则：</p>
+
+<p>  $$\sum _ { i=1 } ^kw (v_ {i-1}, v_i) >= 0$$</p>
+
+<p>  这与 $$$c = (v_0, v_1, ..., v_k)$$$ 为一个负环路即$$$\sum _ {i=1}^kw (v _ {i-1}, v_i) &lt; 0$$$ 矛盾了，因而上文中的假设不成立，即若是第二个循环返回 true，则必存在一个负环路。</p></li>
+</ul>
+
+
+<h5>时间复杂度</h5>
+
+<p>Bellman-Ford 由两个循环构成，第一个循环的时间复杂度为 $$$O(EV)$$$，第二个为 $$$O(E)$$$，因而总的时间复杂度为 $$$O(EV)$$$</p>
+</body>
+</html>

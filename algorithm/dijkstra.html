@@ -1,0 +1,241 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<style>
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    color: #737373;
+    background-color: white;
+    margin: 10px 13px 10px 13px;
+}
+table {
+	margin: 10px 0 15px 0;
+	border-collapse: collapse;
+}
+td,th {	
+	border: 1px solid #ddd;
+	padding: 3px 10px;
+}
+th {
+	padding: 5px 10px;	
+}
+
+a {
+    color: #0069d6;
+}
+a:hover {
+    color: #0050a3;
+    text-decoration: none;
+}
+a img {
+    border: none;
+}
+p {
+    margin-bottom: 9px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #404040;
+    line-height: 36px;
+}
+h1 {
+    margin-bottom: 18px;
+    font-size: 30px;
+}
+h2 {
+    font-size: 24px;
+}
+h3 {
+    font-size: 18px;
+}
+h4 {
+    font-size: 16px;
+}
+h5 {
+    font-size: 14px;
+}
+h6 {
+    font-size: 13px;
+}
+hr {
+    margin: 0 0 19px;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+}
+blockquote {
+    padding: 13px 13px 21px 15px;
+    margin-bottom: 18px;
+    font-family:georgia,serif;
+    font-style: italic;
+}
+blockquote:before {
+    content:"\201C";
+    font-size:40px;
+    margin-left:-10px;
+    font-family:georgia,serif;
+    color:#eee;
+}
+blockquote p {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 18px;
+    margin-bottom: 0;
+    font-style: italic;
+}
+code, pre {
+    font-family: Monaco, Andale Mono, Courier New, monospace;
+}
+code {
+    background-color: #fee9cc;
+    color: rgba(0, 0, 0, 0.75);
+    padding: 1px 3px;
+    font-size: 12px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+pre {
+    display: block;
+    padding: 14px;
+    margin: 0 0 18px;
+    line-height: 16px;
+    font-size: 11px;
+    border: 1px solid #d9d9d9;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+pre code {
+    background-color: #fff;
+    color:#737373;
+    font-size: 11px;
+    padding: 0;
+}
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:10px auto;
+    }
+}
+@media print {
+	body,code,pre code,h1,h2,h3,h4,h5,h6 {
+		color: black;
+	}
+	table, pre {
+		page-break-inside: avoid;
+	}
+}
+</style>
+<title>dijkstra 算法</title>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax:{inlineMath:[['$','$']]}});</script><script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<h3>dijkstra 算法</h3>
+
+<p>这可算作最短路径算法中相当经典的一个，是广度优先搜索的一种应用。通过该算法，将获得一个最短路径树。</p>
+
+<h4>适用场景</h4>
+
+<p>dijkstra 算法适用于求单源的最短路径的情境中，除此之外，它还要求每条边的权重必须为正数。相比于适用于一般情况下计算单源最短路径的 bellman-ford 算法，其虽然提供更好的时间复杂度，但适用范围也狭窄了。</p>
+
+<h4>松弛操作</h4>
+
+<p>首先定义边的权重函数为 $w$, 根节点，或者说初始节点为 $s$，另两个在图中的节点分别为$v$ 和 $u$，同时定义两个节点到 $s$ 的边的最短距离（在下文代码中，其意义往往是临时的）为 $v.d$, $u.d$，且在寻找最短路径中，$v$ 的前继节点为 $v.\pi$ 松弛操作的伪代码如下：</p>
+
+<pre><code>relax(u, v, w):
+    if d.v &gt; d.u + w(u, v)
+        d.v = d.u + w(u, v)
+        v.π = u
+</code></pre>
+
+<p>relax 的功能比较明确，取连接 $u,v$ 的一条边，如果此时源头节点 $s$ 到 $v$ 的临时最短距离比从 $s$ 到 $u$ 再到 $v$ 的距离长，那么说明后者是更短的路径，将后者的值赋予 $v.d$，并且将 $u$ 设置为 $v$ 的前置节点。</p>
+
+<h4>初始化</h4>
+
+<p>dijkstra 算法的初始化并无太多稀奇，首先定义所有点与边的集合为 $U(V, E)$, 而用于存储已放入最小路径树的点的集合，定义为 $S$, 未放入的顶点的集合为 $Q$, 可以知道的是，在刚刚初始化时：$S=\varnothing$, $Q = U.E$，且为了对算法过程进行优化，将把 $Q$ 维护为一个优先队列。而在边的距离方面，对于每一个除源头顶点 $s$ 外的顶点 $u$，初识时 $u.d = \infty$。</p>
+
+<h4>贪心算法</h4>
+
+<p>dijkstra 算法的核心内容如下：</p>
+
+<pre><code>dijkstra(U, s, w):
+    Q = U.E
+    S = ∅
+    while Q != ∅ 
+        q = extract-min(T)
+        s = s ∪ q
+        for v in e ∈ u.Adj[q]
+            relax(u, v, w)
+</code></pre>
+
+<p>算法运行的逻辑并不复杂，在进行如上文所述的初始化操作之后，便是从 while Q != ∅的循环，循环一共将会执行 $V$ 次，因为在初始化时 $Q = U.E$，而每一次循环内部，对已为优先队列的 $Q$ 执行 EXTRACT-MIN 操作，并与 $S$ 取并集。略作解释，即把 $Q$ 中剩余顶点中，与源头顶点 $s$ 最近的顶点取出，放入 $S$ 中。</p>
+
+<p>在循环的最后，便是对余下 $Q$ 中的节点进行松弛操作。保证只经由已在集合 $S$ 中的节点（或者不经过），属于 $Q$ 的每个节点 $u$ ，其记录的 $u.d$ 的正确性。</p>
+
+<h4>算法的正确性</h4>
+
+<p>要证明 Dijkstra 算法的正确性，首先便是要证明如下引理，即：</p>
+
+<p>当节点 $u$ 被放入集合 $S$ 时，$u.d = \varphi(s, u)$，即此是的 $u.d$ 将会是两个顶点的最短距离。</p>
+
+<h5>证明</h5>
+
+<p>证明将采用近似反证法的方式。</p>
+
+<p>假定 $u$ 是第一个在加入集合 $S$ 时，$u.d != \varphi(s, u)$ 的顶点。那么，此时一定存在一条从根节点 $s$ 到 $u$ 的最短路径。可以假设当 $u$ 即将被加入到集合 $S$ 时，在最短路径中存在一个节点 $x$，为该路径在集合 $S$ 中的最后一个节点。而 $y$ 是该路径在 $V-S$ （即不在集合 S 中）上的第一个节点，如此，节点 $x$ 和 $y$ 必是直接连接的，或者说 $x$ 是 $y$ 的前驱节点。同时，定义 $s$ 到 $x$ 的路径为 $p_1，y$ 到 $u$ 的路径为 $p_2$，需要知道的是，这两条路径 $p_1, p_2$ 可能是不存在的（更准确的，是不包含任何路径的）。</p>
+
+<p>在这里，需先明确两点：</p>
+
+<ol>
+<li>如之前所说，由于 $u$ 是第一个在加入集合 $S$ 时，$u.d != \varphi(s, u)$ 的节点。那么显然 $x.d = \varphi(s, x)$。</li>
+<li>由于 $x, y$ 都在从 $s$ 至 $u$ 的最短路径中，因而 $s ~> u -> v$ 必是一条从 $s$ 至 $v$ 的最短路径，否则完全可以替换为另一条更短的路径，那么从 $s$ 至 $u$ 的路径也会更短，这就与原假设矛盾了。</li>
+</ol>
+
+
+<p>而在 $x$ 加入集合 $S$ 后，可以确定的是，路径 $x-y$ 将会被松弛，并且在之后的任何时刻 $y.d = \varphi(s, y)$ 这里利用的是在单源最短路径计算中的<strong>收敛性质</strong>。</p>
+
+<blockquote><p>对于某些节点 $u,v ∈ V$，如果 $s ~> u -> v$ 是图 G 中的一条最短路径，并且在对边 $u, v$ 进行松弛前的任意时间有 $u.d = \varphi(s, u)$，则在之后的所有时间有 $v.d = \varphi(s, v)$。</p></blockquote>
+
+<p>证明将会牵扯到另两个引理<strong>三角不等式性质</strong>和<strong>上界性质</strong>，但并不复杂，在此不作展开了。</p>
+
+<p>既然可以确定 $y.d = \varphi(s, y)$，而在从 $s$ 到 $u$ 的最短路径上，$y$ 在 $u$ 之前，可以等到如下等式：</p>
+
+<p>$$y.d = \varphi(s, y)$$</p>
+
+<p>$$&lt;= \varphi(s, u)$$</p>
+
+<p>$$=u.d$$</p>
+
+<p>然而，从算法的 EXTRACT-MIN 操作中可以知道， $u.d &lt;＝ y.d$，否则 $u$ 不可能在 $y$ 之前被加入到集合 $S$ 中，所以可以推断出如下等式：</p>
+
+<p>$$y.d = \varphi(s, y) = \varphi(s, u) = u.d$$</p>
+
+<p>这与最初的假设矛盾了，从而可以确定在 $u$ 被加入到集合 $S$ 时（及以后），$u.d = \varphi(s, u)$，而当这一引理得以证明，那么结合前驱子图的性质，便可很容易得出当算法运行完毕后，所获得的将是一颗以 $s$ 为根节点的最短路径树，算法的正确性也得到了证明。</p>
+</body>
+</html>
