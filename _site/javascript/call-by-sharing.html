@@ -1,0 +1,233 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<style>
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    color: #737373;
+    background-color: white;
+    margin: 10px 13px 10px 13px;
+}
+table {
+	margin: 10px 0 15px 0;
+	border-collapse: collapse;
+}
+td,th {	
+	border: 1px solid #ddd;
+	padding: 3px 10px;
+}
+th {
+	padding: 5px 10px;	
+}
+
+a {
+    color: #0069d6;
+}
+a:hover {
+    color: #0050a3;
+    text-decoration: none;
+}
+a img {
+    border: none;
+}
+p {
+    margin-bottom: 9px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #404040;
+    line-height: 36px;
+}
+h1 {
+    margin-bottom: 18px;
+    font-size: 30px;
+}
+h2 {
+    font-size: 24px;
+}
+h3 {
+    font-size: 18px;
+}
+h4 {
+    font-size: 16px;
+}
+h5 {
+    font-size: 14px;
+}
+h6 {
+    font-size: 13px;
+}
+hr {
+    margin: 0 0 19px;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+}
+blockquote {
+    padding: 13px 13px 21px 15px;
+    margin-bottom: 18px;
+    font-family:georgia,serif;
+    font-style: italic;
+}
+blockquote:before {
+    content:"\201C";
+    font-size:40px;
+    margin-left:-10px;
+    font-family:georgia,serif;
+    color:#eee;
+}
+blockquote p {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 18px;
+    margin-bottom: 0;
+    font-style: italic;
+}
+code, pre {
+    font-family: Monaco, Andale Mono, Courier New, monospace;
+}
+code {
+    background-color: #fee9cc;
+    color: rgba(0, 0, 0, 0.75);
+    padding: 1px 3px;
+    font-size: 12px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+pre {
+    display: block;
+    padding: 14px;
+    margin: 0 0 18px;
+    line-height: 16px;
+    font-size: 11px;
+    border: 1px solid #d9d9d9;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+pre code {
+    background-color: #fff;
+    color:#737373;
+    font-size: 11px;
+    padding: 0;
+}
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:10px auto;
+    }
+}
+@media print {
+	body,code,pre code,h1,h2,h3,h4,h5,h6 {
+		color: black;
+	}
+	table, pre {
+		page-break-inside: avoid;
+	}
+}
+</style>
+<title>JavaScript 参数传递方式 -- Call by sharing</title>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax:{inlineMath:[['$$$','$$$']]}});</script><script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<h4>JavaScript 参数传递方式 -- Call by sharing</h4>
+
+<p>如 C++ 这样的传统语言上，一基本知识点是在调用函数（方法）并传入参数时，参数的传递方式，即传递值或是传递引用（内存指针）。习惯上，往往通过内部变量的变化是否会造成外部变量的同步变化。</p>
+
+<p>然而这种判断方式有时候是笼统的，内部变量和外部变量的同步变化并不意味着传递方式是纯粹的引用传递，这不仅在 JavaScript 上，在如 Java,Python 这样的语言上，也是如此。</p>
+
+<h4>Call by sharing</h4>
+
+<p><a href="https://en.wikipedia.org/wiki/Evaluation_strategy">维基百科</a> 对三种 Evaluation strategy 有比较简明扼要的介绍，如大多数书中都有的解释，值传递相当于将传入的变量（大多为基本类型）拷贝一份，因而内部变量与外部变量是毫无关系的。而引用传递传递的则是内存地址的指针，因而对内部变量的改动，事实上是对存放在所对应的内存地址上的对象的改动，同指向它的外部变量自然也同步改动。</p>
+
+<blockquote><p>Call-by-reference can be simulated in languages that use call-by-value and don't exactly support call-by-reference</p></blockquote>
+
+<p>这句话非常关键，即很多语言中所谓的引用传递只是模拟出来的，其本质往往还是值传递。JavaScript 就是其中的一种。可以看如下两段函数：</p>
+
+<pre><code>function func(arg0, arg1) {
+    arg0 = 1;
+    arg1.name = 'arg1';
+}
+
+var a = 3, b = {'name'  'b'};
+func(a, b);
+console.log(a, b.name) // a: 3, b.name: arg1 
+</code></pre>
+
+<p>如正常理解，arg0 为值传递，因而在函数体内对 arg0 的修改并未反映到外部，而对于 b 则不同了，b.name 被更新为 'arg1' 了。</p>
+
+<p>然而来看第二段：</p>
+
+<pre><code>function func2(arg0) {
+    arg0 = {'name', 'arg0'};
+}
+
+var b = {'name', 'b'};
+func2(b) // a.name: b
+</code></pre>
+
+<p>换言之，这一次，b.name 并没有被更新为 arg0, 而是保持为 b。</p>
+
+<p>这便是 Call-by-reference，即传入参数的过程，其本质还是值传递，无非是对于引用类型，拷贝的是一个引用。因而在第一个函数中，对于 arg1.name 的修改，能够被同步至外部变量 b，因为二者共享相同的引用，指向同一块地址。</p>
+
+<p>然而在第二段函数中，arg0 = {'name', 'arg0'} 意味着改变了 arg0 的指向，它不再和外部变量 b 指向同一块地址了。这样对其的操作便不能同步至外部。</p>
+
+<p>如前文所述，Java 中的参数传递也符合如上所述的原理，比如当执行如下函数：</p>
+
+<pre><code>import java.lang.StringBuffer;
+
+public class NullTest {
+
+    public static void setString(StringBuffer buffer) {
+        buffer = new StringBuffer("dog");
+    }
+
+    public static void changeString(StringBuffer buffer) {
+        buffer.setCharAt(0, 'd');
+    }
+
+    public static void main(String[] args) {
+        StringBuffer buffer_1 = new StringBuffer("cat");
+        setString(buffer_1);
+        System.out.println(buffer_1.toString());
+        changeString(buffer_1);
+        System.out.println(buffer_1.toString());
+    }
+}
+</code></pre>
+
+<p>输出的结果是：</p>
+
+<pre><code>cat
+dat
+</code></pre>
+
+<p>这大概也是部分 Java 社区的参与者认为 Java 的参数传递本质上都是值传递的缘故吧。</p>
+</body>
+</html>

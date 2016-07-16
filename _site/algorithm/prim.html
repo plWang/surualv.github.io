@@ -1,0 +1,219 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<style>
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    color: #737373;
+    background-color: white;
+    margin: 10px 13px 10px 13px;
+}
+table {
+	margin: 10px 0 15px 0;
+	border-collapse: collapse;
+}
+td,th {	
+	border: 1px solid #ddd;
+	padding: 3px 10px;
+}
+th {
+	padding: 5px 10px;	
+}
+
+a {
+    color: #0069d6;
+}
+a:hover {
+    color: #0050a3;
+    text-decoration: none;
+}
+a img {
+    border: none;
+}
+p {
+    margin-bottom: 9px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #404040;
+    line-height: 36px;
+}
+h1 {
+    margin-bottom: 18px;
+    font-size: 30px;
+}
+h2 {
+    font-size: 24px;
+}
+h3 {
+    font-size: 18px;
+}
+h4 {
+    font-size: 16px;
+}
+h5 {
+    font-size: 14px;
+}
+h6 {
+    font-size: 13px;
+}
+hr {
+    margin: 0 0 19px;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+}
+blockquote {
+    padding: 13px 13px 21px 15px;
+    margin-bottom: 18px;
+    font-family:georgia,serif;
+    font-style: italic;
+}
+blockquote:before {
+    content:"\201C";
+    font-size:40px;
+    margin-left:-10px;
+    font-family:georgia,serif;
+    color:#eee;
+}
+blockquote p {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 18px;
+    margin-bottom: 0;
+    font-style: italic;
+}
+code, pre {
+    font-family: Monaco, Andale Mono, Courier New, monospace;
+}
+code {
+    background-color: #fee9cc;
+    color: rgba(0, 0, 0, 0.75);
+    padding: 1px 3px;
+    font-size: 12px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+pre {
+    display: block;
+    padding: 14px;
+    margin: 0 0 18px;
+    line-height: 16px;
+    font-size: 11px;
+    border: 1px solid #d9d9d9;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+pre code {
+    background-color: #fff;
+    color:#737373;
+    font-size: 11px;
+    padding: 0;
+}
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:10px auto;
+    }
+}
+@media print {
+	body,code,pre code,h1,h2,h3,h4,h5,h6 {
+		color: black;
+	}
+	table, pre {
+		page-break-inside: avoid;
+	}
+}
+</style>
+<title>Prim 算法</title>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax:{inlineMath:[['$','$']]}});</script><script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<h4>Prim 算法</h4>
+
+<p>最小生成树相关章节中惯常要讲解的两个算法之一，与 Krustal 利用边来解决问题不同，Prim 算法以顶点为思考的起点。Prim 算法与单源最短路径求解中的 dijkstra 算法有着相似的原理。</p>
+
+<h5>伪代码</h5>
+
+<p>算法的伪代码非常简洁：</p>
+
+<pre><code>PRIM(G, w, r)
+// initialize
+for each u in G.V
+    u.key = ∞
+    u.π = NIL
+r.key = 0
+Q = G.V
+// main-loop
+while Q != ∅ 
+    u = EXTRACT-MIN(Q)
+    for each v in G.Adj(u)
+        if v in Q and w(u, v) &lt; v.key
+            v.key = w(u, v)
+            v.π = u
+</code></pre>
+
+<h5>实现思路</h5>
+
+<p>初始化过程与 dijkstra 算法中所介绍的在形式上是相似的，只因是在求最短生成树的情景中，略作调整，因而在此之前需对 prim 算法的思想略作介绍。</p>
+
+<p>prim 算法维护两个个集合 $Q$, $S$，在初始化伊始，$Q$ 其即为 $G.V$. $Q$ 集合的数据结构有诸多实现方式，但大抵都可理解为一种最小优先队列（无论用数组、最小堆或是斐波那契堆实现，所影响的只是时间复杂度），队列中的每个元素即为每个顶点，而用于判断元素大小从而维护最小有点队列性质的即为每个顶点的 key。</p>
+
+<p>另一个集合 $S$ 在上文的伪代码中是隐式的，以前驱链表的方式实现。prim 算法的实质即把集合 $Q$ 中的元素逐个放入 $S$ 中。而放入的依据，则是挑选在 $Q$ 集合中，离集合 $S$ 距离最短的元素。因而便容易理解所谓 key ，即每个顶点到集合 $S$ 的最短距离。</p>
+
+<p>在理解基本原理之后就可以回到伪代码中，初始化的过程便是先将除根节点外每个顶点的 key 设为无穷大，而根节点为 0，从而保证根节点是第一个被加入集合 $S$ 的，同时也要讲每个节点的前驱节点设为 NIL.</p>
+
+<p>由于 $Q$ 被维护为一个最小优先队列，因而在主循环中所要做的，就是先执行 EXTRACT-MIN 操作，将 key 最小的元素放入 $S$，此时，由于集合 $S$ 和 $Q$ 都发生了变化，因而要检查更新每个顶点的 key，伪代码中的实现非常简单，即遍历刚被选出的节点 $u$ 的邻接链表，若是对于某个邻接顶点 $v, w(u, v) &lt; v.key$，则意味着此时存在从节点 $v$ 到集合 $S$ 更短的距离，即 $w(u, v)$, 需对 $v$ 的 $key$ 进行更新。当然，也要记得将 $v$ 和 $u$ 链接起来。</p>
+
+<p>如此，在执行完所有代码后，便可得到一棵最小生成树 $A$</p>
+
+<p>$$A = {(v, v.\pi : v\in V - {r})}$$</p>
+
+<h5>贪心策略</h5>
+
+<p>prim 算法实为一种谈心策略，算法的每一步，保证加入的是使树的权重增长最小的边，与上文联系，这与“挑选在 $Q$ 集合中，离集合 $S$ 距离最短的元素”是等价的。</p>
+
+<h5>时间复杂度</h5>
+
+<p>prim 算法时间复杂度，取决于这样两部分：</p>
+
+<ol>
+<li>初始化，由于只是做一次简单的循环，所以时间复杂度是 $O(n)$</li>
+<li><p>主循环，总共会执行 $V$ 次。</p>
+
+<p> 2.1. 在循环内，对于 EXTRACT-MIN，其时间复杂度取决于数据结构，对于最小堆或是斐波那契堆，都是 $lg(V)$</p>
+
+<p> 2.2. 对于主循环中剩余的部分，可用聚合分析的方法，由于所有邻接链表，其总数不过是 $2|E|$，因而操作的总时间复杂度为 $lg(E)$，而这一部分，事实上隐藏着一个 DECREASE-KEY 操作，对于最小堆，复杂度为 $Θ(lg(n))$, 对于斐波那契堆，则为 $Θ(1)$.</p></li>
+</ol>
+
+
+<p>如此，便可得出，以二叉最小堆为数据结构，prim 算法的时间复杂度为 $Vlg(V) + Elg(V)$，而若是斐波那契堆，则为 $Vlg(V) + E$.</p>
+</body>
+</html>

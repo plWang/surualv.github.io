@@ -1,0 +1,459 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<style>
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    color: #737373;
+    background-color: white;
+    margin: 10px 13px 10px 13px;
+}
+table {
+	margin: 10px 0 15px 0;
+	border-collapse: collapse;
+}
+td,th {	
+	border: 1px solid #ddd;
+	padding: 3px 10px;
+}
+th {
+	padding: 5px 10px;	
+}
+
+a {
+    color: #0069d6;
+}
+a:hover {
+    color: #0050a3;
+    text-decoration: none;
+}
+a img {
+    border: none;
+}
+p {
+    margin-bottom: 9px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #404040;
+    line-height: 36px;
+}
+h1 {
+    margin-bottom: 18px;
+    font-size: 30px;
+}
+h2 {
+    font-size: 24px;
+}
+h3 {
+    font-size: 18px;
+}
+h4 {
+    font-size: 16px;
+}
+h5 {
+    font-size: 14px;
+}
+h6 {
+    font-size: 13px;
+}
+hr {
+    margin: 0 0 19px;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+}
+blockquote {
+    padding: 13px 13px 21px 15px;
+    margin-bottom: 18px;
+    font-family:georgia,serif;
+    font-style: italic;
+}
+blockquote:before {
+    content:"\201C";
+    font-size:40px;
+    margin-left:-10px;
+    font-family:georgia,serif;
+    color:#eee;
+}
+blockquote p {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 18px;
+    margin-bottom: 0;
+    font-style: italic;
+}
+code, pre {
+    font-family: Monaco, Andale Mono, Courier New, monospace;
+}
+code {
+    background-color: #fee9cc;
+    color: rgba(0, 0, 0, 0.75);
+    padding: 1px 3px;
+    font-size: 12px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+pre {
+    display: block;
+    padding: 14px;
+    margin: 0 0 18px;
+    line-height: 16px;
+    font-size: 11px;
+    border: 1px solid #d9d9d9;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+pre code {
+    background-color: #fff;
+    color:#737373;
+    font-size: 11px;
+    padding: 0;
+}
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:10px auto;
+    }
+}
+@media print {
+	body,code,pre code,h1,h2,h3,h4,h5,h6 {
+		color: black;
+	}
+	table, pre {
+		page-break-inside: avoid;
+	}
+}
+</style>
+<title>斐波那契堆</title>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax:{inlineMath:[['$$$','$$$']]}});</script><script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<h3>斐波那契堆</h3>
+
+<blockquote><p>斐波那契堆(Fibonacci heap)是计算机科学中树的集合。可用于实现合并优先队列。不涉及删除元素的操作有 O(1) 的平摊时间。 Extract-Min 和 Delete 的数目和其它相比，较小时效率更佳。稠密图每次 decrease key 只要 O(1) 的平摊时间，和二项堆的 O(lg n) 相比是巨大的改进。-- 《维基百科》</p></blockquote>
+
+<h4>斐波那契堆与二叉堆</h4>
+
+<p>算法导论中对二者在不同操作下的时间复杂度，有如下表格（注：对二叉堆，所列出的是最坏情况下的时间复杂度，而对于斐波那契堆，则为摊还时间复杂度）</p>
+
+<table>
+<thead>
+<tr>
+<th> 操作        </th>
+<th align="center"> 二叉堆           </th>
+<th align="right"> 斐波那契堆  </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> MAKE-HEAP      </td>
+<td align="center"> Θ(1) </td>
+<td align="right"> Θ(1) </td>
+</tr>
+<tr>
+<td> INSERT      </td>
+<td align="center"> Θ(lgn)      </td>
+<td align="right">   Θ(1) </td>
+</tr>
+<tr>
+<td> MINIMUM </td>
+<td align="center"> Θ(1)      </td>
+<td align="right">    Θ(1) </td>
+</tr>
+<tr>
+<td> EXTRACT-MIN </td>
+<td align="center"> Θ(lgn) </td>
+<td align="right"> Θ(lgn) </td>
+</tr>
+<tr>
+<td> UNION </td>
+<td align="center"> Θ(n) </td>
+<td align="right"> Θ(1) </td>
+</tr>
+<tr>
+<td>DECREASE-KEY </td>
+<td align="center"> Θ(lgn) </td>
+<td align="right"> Θ(1) </td>
+</tr>
+<tr>
+<td> DELETE </td>
+<td align="center"> Θ(lgn) </td>
+<td align="right"> Θ(lgn) </td>
+</tr>
+</tbody>
+</table>
+
+
+<p>从这张表格中，可以看到斐波那契堆的优势体现于 INSERT, UNION(合并堆), DECREASE-KEY 这三种操作中，尤其是 UNION，相比于二叉堆的线性复杂度有显著提升。而在 EXTRACT-MIN 和 DELETE 操作中，二叉堆与斐波那契堆的表现是相近的。</p>
+
+<h4>斐波那契堆的结构</h4>
+
+<p>算法导论上对斐波那契堆的定义，是「一系列具有最小堆序的有根树的集合」，而具体在对于堆中每个节点 x ，其结构可概括为以下几点：</p>
+
+<ol>
+<li>父节点 p[x]</li>
+<li>指向任一一个子女节点的指针 child[x]</li>
+<li>左兄弟 left[x], 右兄弟 right[x]</li>
+<li>子女的个数，也被称为度 (degree)</li>
+<li>mark, 用于表示该节点是否失去过一个孩子</li>
+</ol>
+
+
+<p><strong>要做补充说明的是：</strong></p>
+
+<ol>
+<li>对于节点 x, 其域中仅有指向任一一个子女节点的指针，而对于其所有的子女节点，则维护一个环形链表。</li>
+<li>倘若 left[x] = right[x] = x, 那么 x 为其父节点 p[x] 唯一的孩子节点</li>
+</ol>
+
+
+<h4>度数</h4>
+
+<p>斐波那契堆中所谓度数，即每个节点其子节点的数目，而对于整棵树而言，其度数则为根节点的度数。之所以先引入度数，第一在于其将影响到对斐波那契堆各项操作（主要是 EXTRACT-MIN 和 DECREASE-KEY）的分析，其次在分析中，也方便穿插介绍如 INSERT 等操作。</p>
+
+<p>倘若我们将具有 n 个节点的斐波那契堆中任意节点的度数上界表示为 D(n)，那么所要证明并使用的结论是：</p>
+
+<p>$$D(n) &lt;= \lfloor{lgn}\rfloor$$</p>
+
+<p><strong>在正式证明之前，需要先得出三个引理：</strong></p>
+
+<ul>
+<li>设 x 是斐波那契堆中的任意节点，并令 x.degree = k，设 $$$y_1$$$, $$$y_2$$$, $$$y_3$$$, $$$y_4$$$ ... $$$y_k$$$ 为 x 的 k 个孩子，且以链入的先后顺序进行排序，那么对于 i = 2, 3, 4, ..., k,有 $$$y_1 > 1$$$ 且 $$$y_i.degree >= i - 2(i >= 2)$$$，</li>
+</ul>
+
+
+<p>证明这条引理，就需要先了解斐波那契堆的 INSERT 及 EXTRACT-MIN 过程。</p>
+
+<h5>INSERT</h5>
+
+<p>INSERT 的过程较为简单，算法导论所给出的伪代码是：</p>
+
+<pre><code>INSERT(H, x)
+    x.degree = 0
+    x.p = NIL
+    x.child = NIL
+    x.mark = FALSE
+    if H.min == NIL
+        create a root list for H containing just x
+        H.min = x
+    else insert x into H's root list
+        if x.key &lt; H.min.key
+            H.min = x
+    H.n = H.n + 1
+</code></pre>
+
+<p>伪代码中 H 指代堆，x 为将要插入的节点。首先对节点 x 进行相关数据的初始化，由于还未被插入，因而其父节点，孩子节点都为空，度数为 0, 而由于未曾被删去一个节点，mark 标记为 false。之后堆 H 进行判断，若为空堆，那么创建一个以 x 为根链表唯一节点的堆，反之则将 x 直接插入根链表中。值得小心的是，若是第二种情况，那么还要检测新加入的 x，是否会成为堆中新的最小节点（与原 x.min 进行比较），同时要将堆中节点数 H.n 加一。</p>
+
+<h5>EXTRACT-MIN</h5>
+
+<p>EXTRACT-MIN 相较之下复杂一些：</p>
+
+<pre><code>z = H.min
+if z != NIL:
+    for each child x of z
+        add x to the root list of H
+        x.p = NIL
+    remove z from the root list of H
+if z == z.right
+    H.min = NIL
+else
+    H.min = z.right
+    CONSOLIDATE(H)
+H.n = H.n - 1
+return z
+</code></pre>
+
+<p>整体的思路是非常清晰的，首先判断 H.min, 即 z 是否为空，若不为空，首先将其所有的孩子节点加入到根链表中，并将每一个孩子节点的父节点置为空。在完成子节点操作后，再将 z 从根链表中移除。</p>
+
+<p>之后便是重置 H.min，若是 z 与其右兄弟指向同一节点，那么 z 就是堆中惟一节点了，那么 H.min ＝ NIL，因为 z 已经被移除了。反之，将 H.min 指向右兄弟。值得注意的是，此时并为保证其为最小节点。这之后，再执行非常重要的 CONSOLIDATE 一步。当然最后，要将 H.n 减一，并且返回 z。</p>
+
+<p>那么何为 CONSOLIDATE 呢？这才是将与引理一相关联的关键部分。</p>
+
+<p><strong>CONSOLIDATE</strong></p>
+
+<pre><code>let A[0...D(H.n)] be a new array
+for i = 0 to D(H.n)
+    A[i] = NIL
+for each node w in the root list of H
+    x = w
+    d = x.degree
+    while A[d] != NIL
+        y = A[d]
+        if x.key &gt; y.key
+            exchange x with y
+        LINK(H, y, x)
+        A[d] = NIL
+        d = d + 1
+    A[d] = x
+H.min = NIL
+for i = 0 to D(H.n)
+    if A[i] != NIL
+        if H.min == NIL
+            create a root list for H containing just A[i]
+            H.min = A[i]
+        else
+            insert A[i] to H's root list
+            if A[i].key &lt; H.min.key
+                H.min = A[i]
+</code></pre>
+
+<p><strong>LINK</strong></p>
+
+<pre><code>remove y from the root list of H
+make y a child of x, inscrementing x.degree
+y.mark = false
+</code></pre>
+
+<p>CONDOLIDATE 的目的，一在于保证根链表中每棵树有着不同的度数，二在于重新获得堆的最小节点，并用 H.min 指向它，</p>
+
+<p>首先初始化一个数组 A，索引最大值为 H 的节点数（度数无法超过这个值，用来保存节点的度数与节点的映射关系。之后检查根链表中的每一个节点，找到度数与已存入 A 的且度数有重叠的节点，并用 LINK 进行处理。而 LINK，事实上是使其中一个节点 y 成为 x 的孩子节点，并将 y 从根链表中移除，mark 置为 false, 并增加 x 的度数。由于 x 的度数增加了，因此要再进入 while 循环进行检验。同时为了尽量保证最小堆的性质，在具体进入 LINK 操作前，会比较 x 和 y 的 key 的大小，若前者更大，那么会预先进行交换操作。</p>
+
+<p>CONSOLIDATE 的后半部分更简单一些，即克隆一个新的堆，并将原先的节点都加入新堆的根链表，同时找到最小节点。</p>
+
+<p><strong>回到引理一</strong></p>
+
+<p>从 CONSOLIDATE 可以看出，只有当节点 y 与 节点 x 拥有相同的度数时，它才可能被插入到 x 的树中。那么会到引理一，在 $$$y_i$$$ 被插入前，x 已至少有 i - 1 个节点，此时 $$$y_i$$$的节点也至少有 i - 1 个。</p>
+
+<p>至此离获得引理结论还不充分，这里就要引入 DECREASE-KEY 过程。</p>
+
+<p><strong>DECREASE-KEY</strong></p>
+
+<pre><code>DECREASE-KEY(H, x, k)
+    if k &gt; x.key
+        error ...
+    x.key = k
+    y = x.p
+    if y != NIL and x.key &lt; y.key
+        CUT(H, x, y)
+        CASCADING-CUT(H, y)
+    if x.key &lt; H.min.key
+        H.min = x
+</code></pre>
+
+<p><strong>CUT</strong></p>
+
+<pre><code>CUT(H, x, y)
+    remove x from the child list of y, decrementing y.degree
+    add x to the root list of H
+    x.p = NIL
+    x.mark = false
+</code></pre>
+
+<p><strong>CASCADING-CUT</strong></p>
+
+<pre><code>CASCADING-CUT(H, y)
+    z = y.p
+    if z != NIL
+        if y.mark == false
+            y.mark = true
+        else CUT(H, y, z)
+        CASCADING-CUT(H, z)
+</code></pre>
+
+<p>DECREASE-KEY 本身的操作很简单，即便是 CUT 操作也很好理解，当 x.key &lt; y.key 时，将 x 从 y 的子节点中移除，添加到根链表，并作相关的辅助操作。</p>
+
+<p>CASCADING-CUT 是很有趣的操作，它的作用在于更新 mark 值，尤其是在节点 y 失去两个子节点后，将其与父节点截断，加入到根节点，并对其父节点 z 进行递归操作。</p>
+
+<p>具体的摊还分析放在后文中，而仅从此操作，便可知，作为某个节点 z 的子节点 y,  最多只可能失去一个孩子，否则将会被截断，而前文已经得出当 y 刚成为 z 的孩子节点时，至少有 i - 1 个节点。那么在其作为孩子节点的生命周期中，将至少保有 i - 2 个节点。引理一得证。</p>
+
+<p>那么来看看引理二：</p>
+
+<p>对于所有的整数 $$$k >= 0$$$,</p>
+
+<p>$$$ F_{{k+2}} $$$</p>
+
+<p>$$$ = 1 + \sum_{i=0}^{k}{F_i}$$$ , 其中 $$$F_k$$$为第 k 个斐波那契数。</p>
+
+<p><strong>这可以由数学归纳法比较容易地得证。</strong></p>
+
+<p>首先得知 $$$F_0 = 0, F_1 = 1$$$, 且 $$$F_2 = 1 = 1 + \sum_{i=0}^{0}{F_1}$$$ 成立。</p>
+
+<p>那么当归纳前提是 $$$F_k+1 = 1 + \sum_{i=0}^{k-1}{F_i}$$$,</p>
+
+<p>有 $$$F_k+2 $$$</p>
+
+<p>$$$= F_{K+1} + F_k $$$</p>
+
+<p>$$$= \sum_{i=0}^{k-1}{F_i} + F_k + 1 $$$</p>
+
+<p>$$$= \sum_{i=0}^{k}{F_i} + 1$$$ 证毕</p>
+
+<p><strong>之后便是引理三：</strong></p>
+
+<p>对于所有的整数 $$$k >= 0$$$, 斐波那契数的第 k + 2 个数满足 $$$F_{k+2} >= \phi^k $$$ 其中 $$$\phi$$$ 为黄金分割数。</p>
+
+<p>证明依旧使用数学归纳法，首先可以很快得出引理三对于 $$$k_0, k_1$$$ 都是成立的。</p>
+
+<p>那么当前提是</p>
+
+<p>$$$k_{i-1}$$$</p>
+
+<p>$$$k_{i-2}$$$ 都符合引理三时，</p>
+
+<p>$$$k_{i}$$$</p>
+
+<p>$$$=k_{i-1} +$$$</p>
+
+<p>$$$k_{i-2}$$$</p>
+
+<p>$$$>=\phi^{k-2} + \phi^{k-1} =\phi^{k-2}(\phi + 1)$$$</p>
+
+<p>不可忘了所谓$$$\phi$$$即为$$$x^2=x+1$$$的根，因而上式右边等于$$$\phi^k$$$，引理三得证。</p>
+
+<p>在获得三个引理之后，便可以切入最初关于度数的证明。假定$$$s_k$$$表示度数为 k 的节点所可能具有的最小节点个数，所需注意的是这里的节点个数包含 k 本身，那么易得到 $$$s_0=1, s_1=2...$$$</p>
+
+<p>由此对于我们想要知道的 size(x) 的上界，可用其子节点 $$$k_1, k_2, k_3$$$的 $$$s_1, s_2...$$$来表示。为了方便之后的证明，可将其节点本身，及第一个孩子节点单独提取出来，各只算一个，得到如下式：</p>
+
+<p>$$size(x) >= s_k >= 2 + \sum_{i=2}^{k}S_m$$</p>
+
+<p>其中 $$$m = y_{i.degree}$$$，并且由引理一可进一步推得</p>
+
+<p>$$m >= i - 2$$</p>
+
+<p>在这里将要做一个重要的归纳证明，即 $$$s_k >= F_{k+2} $$$</p>
+
+<p>当 k = 0,1 时上式成立，那么利用归纳法，$$$s_k >= 2 + \sum_{i=2}^{k}S_m $$$</p>
+
+<p>$$$>= 2 + \sum_{i=2}^{k}F_i$$$</p>
+
+<p>$$$= 1 + \sum_{i=0}^{k}F_i$$$</p>
+
+<p>$$$= F_{i+2}$$$</p>
+
+<p>$$$>= \phi^i$$$</p>
+
+<p>其中上等式中 m = i - 2</p>
+
+<p>在该定理证明之后，便很容易逆推得到最初的结论（记住 k 为度数，size(x) 为节点总数），即</p>
+
+<p>$$D(n) &lt;= \lfloor{lgn}\rfloor$$</p>
+</body>
+</html>

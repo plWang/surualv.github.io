@@ -1,0 +1,205 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<style>
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    color: #737373;
+    background-color: white;
+    margin: 10px 13px 10px 13px;
+}
+table {
+	margin: 10px 0 15px 0;
+	border-collapse: collapse;
+}
+td,th {	
+	border: 1px solid #ddd;
+	padding: 3px 10px;
+}
+th {
+	padding: 5px 10px;	
+}
+
+a {
+    color: #0069d6;
+}
+a:hover {
+    color: #0050a3;
+    text-decoration: none;
+}
+a img {
+    border: none;
+}
+p {
+    margin-bottom: 9px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #404040;
+    line-height: 36px;
+}
+h1 {
+    margin-bottom: 18px;
+    font-size: 30px;
+}
+h2 {
+    font-size: 24px;
+}
+h3 {
+    font-size: 18px;
+}
+h4 {
+    font-size: 16px;
+}
+h5 {
+    font-size: 14px;
+}
+h6 {
+    font-size: 13px;
+}
+hr {
+    margin: 0 0 19px;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+}
+blockquote {
+    padding: 13px 13px 21px 15px;
+    margin-bottom: 18px;
+    font-family:georgia,serif;
+    font-style: italic;
+}
+blockquote:before {
+    content:"\201C";
+    font-size:40px;
+    margin-left:-10px;
+    font-family:georgia,serif;
+    color:#eee;
+}
+blockquote p {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 18px;
+    margin-bottom: 0;
+    font-style: italic;
+}
+code, pre {
+    font-family: Monaco, Andale Mono, Courier New, monospace;
+}
+code {
+    background-color: #fee9cc;
+    color: rgba(0, 0, 0, 0.75);
+    padding: 1px 3px;
+    font-size: 12px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+pre {
+    display: block;
+    padding: 14px;
+    margin: 0 0 18px;
+    line-height: 16px;
+    font-size: 11px;
+    border: 1px solid #d9d9d9;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+pre code {
+    background-color: #fff;
+    color:#737373;
+    font-size: 11px;
+    padding: 0;
+}
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:10px auto;
+    }
+}
+@media print {
+	body,code,pre code,h1,h2,h3,h4,h5,h6 {
+		color: black;
+	}
+	table, pre {
+		page-break-inside: avoid;
+	}
+}
+</style>
+<title>Kruskal 算法</title>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax:{inlineMath:[['$','$']]}});</script><script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<h4>Kruskal 算法</h4>
+
+<p>Kruskal 算法为 prim 算法外另一最小生成树问题中的经典算法，同样采取了贪心策略，不同的是其思考的出发点是边的集合，并且运用不相交集合森林来优化实现。</p>
+
+<p>Kruskal 算法的基本步骤是：</p>
+
+<ol>
+<li>初始化时对每个顶点 V 执行 MAKE-SET 操作，各个集合均不相交</li>
+<li>取出在图中最小的边，前提是边所对应的两个顶点此时不在一个集合中</li>
+<li>将取出的边的两个顶点进行 UNION 操作，放入一个集合</li>
+<li>将所取出的边放入最后将要生成的集合（树） A 中</li>
+</ol>
+
+
+<p>由此可见 Krustal 所采用的是贪心算法，每次新加入到森林中必是权重最小的边，从而保证最后所获得的是一棵最小生成树。</p>
+
+<h5>伪代码</h5>
+
+<p>根据以上步骤，可给出如下伪代码</p>
+
+<pre><code>KRUSKAL(G,W)
+A = ∅
+for each v in G.v
+    MAKE-SET(v)
+sort the edges in G.E order by weight w
+for each edge (u, v) in G.E, orderd by weight w
+    if FIND-SET(u) != FIND-SET(v)
+        A = A ∪ (u, v)
+        UNION(u, v)
+return A
+</code></pre>
+
+<h4>时间复杂度</h4>
+
+<p>对于不相交的集合森林，在同时使用了带路径压缩和按轶合并的情况下，若是对 n 个元素进行 m 个不相交集合操作（MAKE-SET, FIND-SET, UNION)，所需的运行时间是 $ O(m\alpha(n))$，这里不作展开，以后的文章会做论证。</p>
+
+<p>从伪代码中可看到，总过进行了 $O(V)$ 次 MAKE-SET 操作，和 $O(E)$ 次 FIND-SET 和 UNION 操作， 元素总数为 $V$，因而时间复杂度为$O((E + V)\alpha(V))$，考虑到一下亮点：</p>
+
+<ol>
+<li>$\alpha(V) ＝ O(lgV)$</li>
+<li>假定图是连通且稀疏的，即 $E >= V - 1$，且 $E &lt;= V^2$</li>
+</ol>
+
+
+<p>从 1 及 2 中的 $E >= V - 1$ 可得到时间复杂度 $O((E + V)\alpha(V))$ 可以进一步表示为 $O(Elg(E))$，而根据 2 中的 $E &lt;= V^2$ 可最终将时间复杂度表示为 $O(Elg(V))$</p>
+</body>
+</html>
