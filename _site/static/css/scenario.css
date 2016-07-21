@@ -4,7 +4,7 @@
 /* Special Scenarios Module */
 .b_scenarios {
   min-height: 320px;
-  background: white url(../images/bg.jpg) 0 center no-repeat;
+  background: white url(../images/yawen/hug2.jpg) 0 center no-repeat;
   background-size: 100%;
   /* 不支持 cover 的兼容处理 */
   background-size: cover;
