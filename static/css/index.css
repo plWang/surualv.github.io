@@ -38,6 +38,9 @@ a, a:hover {
   margin: 36px 24px 0 0;
   float: right;
   text-align: right;
+  position: fixed;
+  _position: absolute;
+  z-index:9999;
 }
 
 .nav-btn {
